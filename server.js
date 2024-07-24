@@ -3,13 +3,10 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const WebModel = require("./models/webSchema");
 const cors = require("cors");
+const app = express();
 dotenv.config();
 const port = process.env.PORT || 5000;
 const connectionString = process.env.CONNECTION_STRING;
-
-const app = express();
-
-app.use(express.json());
 
 // Allow requests from your Netlify front-end
 const allowedOrigins = ["https://main--universityprojectofficial.netlify.app/"];
@@ -26,6 +23,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.use(express.json());
 //connect to data-base
 mongoose
   .connect(connectionString)
