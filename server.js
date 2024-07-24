@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 
 // Allow requests from your Netlify front-end
-const allowedOrigins = ["https://universityprojectofficial.netlify.app/"];
+const allowedOrigins = ["https://main--universityprojectofficial.netlify.app/"];
 
 const corsOptions = {
   origin: (origin, callback) => {
