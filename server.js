@@ -8,6 +8,26 @@ const connectionString = process.env.CONNECTION_STRING;
 
 const app = express();
 
+const cors = require("cors");
+app.use(cors());
+
+app.use(express.json());
+
+// Allow requests from your Netlify front-end
+const allowedOrigins = ["https://universityprojectofficial.netlify.app/"];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
+
 //connect to data-base
 mongoose
   .connect(connectionString)
@@ -18,34 +38,19 @@ app.get("/", (req, res) => {
   res.send("<h1>Home Page</h1>");
 });
 
-app.get("/create", (req, res) => {
-  //create new instance from model
-  const webInstance = new WebModel({
-    Fullname: "abdel rahman ghannoum",
-    PhoneNumber: 76316965,
-    Email: "abdelramangh@gmail.com",
-    Details: "This is a realy great webpage thanks.",
-  });
-  //save it to data-base
-  webInstance
-    .save()
-    .then((result) => res.send(result))
-    .catch((err) => console.log(err));
-});
-
-app.get("/all-users", (req, res) => {
+app.get("/allUsers", (req, res) => {
   WebModel.find()
     .then((result) => res.json(result))
     .catch((err) => console.log(err));
 });
 
-app.get("/each-user", (req, res) => {
+app.get("/eachUser", (req, res) => {
   WebModel.findById("664dda555a50c9e67f2a1dd7")
     .then((result) => res.json(result))
     .catch((err) => console.log(err));
 });
 
-app.post("/create-user", (req, res) => {
+app.post("/create", (req, res) => {
   const webInstance = new WebModel(req.body);
   webInstance
     .save()
