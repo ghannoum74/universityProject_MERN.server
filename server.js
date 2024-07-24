@@ -2,14 +2,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const WebModel = require("./models/webSchema");
+const cors = require("cors");
 dotenv.config();
 const port = process.env.PORT || 5000;
 const connectionString = process.env.CONNECTION_STRING;
 
 const app = express();
-
-const cors = require("cors");
-app.use(cors());
 
 app.use(express.json());
 
