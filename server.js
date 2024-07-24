@@ -9,19 +9,17 @@ const port = process.env.PORT || 5000;
 const connectionString = process.env.CONNECTION_STRING;
 
 // Allow requests from your Netlify front-end
-const allowedOrigins = ["https://main--universityprojectofficial.netlify.app/"];
 
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
-
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5000",
+      "https://main--universityprojectofficial.netlify.app",
+    ],
+    credentials: true, // Set this to true if you need to handle credentials
+    optionsSuccessStatus: 200,
+  })
+);
 
 app.use(express.json());
 //connect to data-base
