@@ -7,7 +7,7 @@
       "dest": "/server.js",
       "methods": ["GET", "POST"],
       "headers": {
-        "Access-Control-Allow-Origin": "https://main--universityprojectofficial.netlify.app/"
+        "Access-Control-Allow-Origin": "*"
       }
     }
   ]
