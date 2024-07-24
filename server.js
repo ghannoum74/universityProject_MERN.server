@@ -9,39 +9,15 @@ const port = process.env.PORT || 5000;
 const connectionString = process.env.CONNECTION_STRING;
 
 //connect to data-base
-const maxRetries = 5;
-const retryDelay = 5000; // 5 seconds
+mongoose
+  .connect(connectionString)
+  .then(() => console.log("data base login successfuly..."))
+  .catch((err) => console.log(err));
 
-// Function to connect to MongoDB with retry
-function connectWithRetry(retries = 0) {
-  mongoose
-    .connect(connectionString, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
-    .then(() => {
-      console.log("Database connection successful...");
-    })
-    .catch((err) => {
-      if (retries < maxRetries) {
-        console.log(
-          `Failed to connect to database. Retrying in ${
-            retryDelay / 1000
-          } seconds...`
-        );
-        setTimeout(() => connectWithRetry(retries + 1), retryDelay);
-      } else {
-        console.error(
-          "Max retries reached. Could not connect to the database."
-        );
-        console.error(err);
-        process.exit(1); // Exit the process with failure code
-      }
-    });
-}
+app.get("/", (req, res) => {
+  res.send("<h1>Home Page</h1>");
+});
 
-// Start the connection attempt
-connectWithRetry();
 // Allow requests from your Netlify front-end
 
 app.use(
@@ -54,6 +30,8 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
+
+// app.use(cors());
 
 app.use(express.json());
 
