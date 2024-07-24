@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const WebModel = require("./models/webSchema");
+const { WebModel, validationForm } = require("./models/webSchema");
 const cors = require("cors");
 const app = express();
 dotenv.config();
@@ -21,11 +21,17 @@ app.use(
   })
 );
 
+// app.use(cors());
+
 app.use(express.json());
 //connect to data-base
 mongoose
   .connect(connectionString)
-  .then(() => console.log("Database connected..."))
+  .then(() =>
+    app.listen(port, () => {
+      console.log(`server is listening on port ${port} using express...`);
+    })
+  )
   .catch((err) => console.log(err));
 
 app.get("/", (req, res) => {
@@ -45,13 +51,13 @@ app.get("/eachUser", (req, res) => {
 });
 
 app.post("/create", (req, res) => {
+  const { error } = validationForm.validate(req.body);
+  if (error) {
+    return error;
+  }
   const webInstance = new WebModel(req.body);
   webInstance
     .save()
     .then((result) => res.status(200).json(result))
     .catch((err) => console.log(err));
-});
-
-app.listen(port, () => {
-  console.log(`server is listening on port ${port} using express...`);
 });
