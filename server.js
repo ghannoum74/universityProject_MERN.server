@@ -14,7 +14,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5000",
-      "https://universityprojectofficial.netlify.app/",
+      "https://main--universityprojectofficial.netlify.app/",
     ],
     credentials: true,
     optionsSuccessStatus: 200,
@@ -27,11 +27,7 @@ app.use(express.json());
 //connect to data-base
 mongoose
   .connect(connectionString)
-  .then(() =>
-    app.listen(port, () => {
-      console.log(`server is listening on port ${port} using express...`);
-    })
-  )
+  .then(() => console.log("data base login successfuly..."))
   .catch((err) => console.log(err));
 
 app.get("/", (req, res) => {
@@ -60,4 +56,8 @@ app.post("/create", (req, res) => {
     .save()
     .then((result) => res.status(200).json(result))
     .catch((err) => console.log(err));
+});
+
+app.listen(port, () => {
+  console.log(`server is listening on port ${port} using express...`);
 });
