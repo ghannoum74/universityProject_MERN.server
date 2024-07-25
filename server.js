@@ -8,23 +8,14 @@ dotenv.config();
 const port = process.env.PORT || 5000;
 const connectionString = process.env.CONNECTION_STRING;
 
-//connect to data-base
-mongoose
-  .connect(connectionString)
-  .then(() => console.log("data base login successfuly..."))
-  .catch((err) => console.log(err));
-
-app.get("/", (req, res) => {
-  res.send("<h1>Home Page</h1>");
-});
-
 // Allow requests from your Netlify front-end
 
 app.use(
   cors({
     origin: [
       "http://localhost:5000",
-      "https://main--universityprojectofficial.netlify.app/",
+      "https://main--universityprojectofficial.netlify.app",
+      "https://universityproject-mern-server.onrender.com",
     ],
     credentials: true,
     optionsSuccessStatus: 200,
@@ -35,6 +26,15 @@ app.use(
 
 app.use(express.json());
 
+//connect to data-base
+mongoose
+  .connect(connectionString)
+  .then(() => console.log("data base login successfuly..."))
+  .catch((err) => console.log(err));
+
+app.get("/", (req, res) => {
+  res.send("<h1>Home Page</h1>");
+});
 app.get("/allUsers", (req, res) => {
   WebModel.find()
     .then((result) => res.json(result))
