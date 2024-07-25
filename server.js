@@ -48,15 +48,21 @@ app.get("/eachUser", (req, res) => {
 });
 
 app.post("/create", (req, res) => {
+  console.log("Incoming request data:", req.body); // Log request data
+
   const { error } = validationForm.validate(req.body);
   if (error) {
-    return error;
+    return res.status(400).json({ error: error.details[0].message });
   }
+
   const webInstance = new WebModel(req.body);
   webInstance
     .save()
     .then((result) => res.status(200).json(result))
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.error("Error saving to database:", err.message); // Log the error message
+      res.status(500).json({ error: "Internal Server Error" });
+    });
 });
 
 app.listen(port, () => {
