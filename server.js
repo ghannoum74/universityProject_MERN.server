@@ -24,7 +24,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5000",
-      "https://main--universityprojectofficial.netlify.app/",
+      "https://universityprojectofficial.netlify.app/",
     ],
     credentials: true,
     optionsSuccessStatus: 200,
